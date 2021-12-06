@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:unicoin/login/auth.dart';
+import 'package:unicoin/services/auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginScreen extends StatelessWidget {
