@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:unicoin/market/market_item.dart';
 import 'package:unicoin/services/api.dart';
+import 'package:unicoin/shared/bottom_nav.dart';
 
 import '../shared/error.dart';
-import '../shared/bottom_nav.dart';
 
 class MarketScreen extends StatefulWidget {
   const MarketScreen({Key? key}) : super(key: key);
@@ -13,19 +13,10 @@ class MarketScreen extends StatefulWidget {
 }
 
 class _MarketScreenState extends State<MarketScreen> {
-  late List _market;
-  late Future<void> _initMarketData;
-
-  @override
-  void initState() {
-    super.initState();
-    _initMarketData = _initMarket();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _initMarketData,
+    return FutureBuilder<List>(
+        future: Api().fetchMarketData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -33,65 +24,66 @@ class _MarketScreenState extends State<MarketScreen> {
             return Center(
               child: ErrorMessage(message: snapshot.error.toString()),
             );
-          } else if (_market.isNotEmpty) {
+          } else if (snapshot.hasData) {
+            var market = snapshot.data!;
             return Scaffold(
               appBar: AppBar(
                 backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
                 title: const Text("Market"),
               ),
-              body: ListView.builder(
-                itemCount: _market.length,
-                itemBuilder: (BuildContext context, index) => ListTile(
-                  title: Text(_market[index]["name"]),
-                ),
-              ),
-              bottomNavigationBar: BottomNavBar(),
+              body: RefreshIndicator(
+                  onRefresh: () async {
+                    setState(() {});
+                  },
+                  child: ListView.builder(
+                      itemBuilder: (BuildContext context, index) =>
+                          MarketItem(coin: market[index], id: index))),
+              bottomNavigationBar: const BottomNavBar(),
             );
-            /*
-            return Scaffold(
-                appBar: AppBar(
-                  backgroundColor:
-                      Theme.of(context).appBarTheme.backgroundColor,
-                  title: const Text("Market"),
-                ),
-                body: RefreshIndicator(
-                  onRefresh: _refreshMarket,
-                  child: CustomScrollView(
-                    slivers: <Widget>[
-                      SliverList(
-                        delegate: SliverChildListDelegate([
-                          Container(),
-                          Container(
-                            child: ListView.builder(
-                              itemCount: _market.length,
-                              itemBuilder: (BuildContext context, index) =>
-                                  ListTile(
-                                title: Text(_market[index]["name"]),
-                              ),
-                            ),
-                          ),
-                        ]),
-                      )
-                    ],
-                  ),
-                ));
-            */
           } else {
             return const Text("No market data found in the api",
                 textDirection: TextDirection.ltr);
           }
         });
   }
+}
 
-  Future<void> _initMarket() async {
-    final data = await Api().fetchMarketData();
-    _market = data;
-  }
+class Title extends StatelessWidget {
+  const Title({Key? key}) : super(key: key);
 
-  Future<void> _refreshMarket() async {
-    final data = await Api().fetchMarketData();
-    setState(() {
-      _market = data;
-    });
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: const [
+        Expanded(
+          flex: 5,
+          child: Text('#'),
+        ),
+        Expanded(
+          flex: 45,
+          child: Text('Name'),
+        ),
+        Expanded(
+          flex: 20,
+          child: Text(
+            "24h",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.grey,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 30,
+          child: Text(
+            'Price',
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              color: Colors.grey,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
