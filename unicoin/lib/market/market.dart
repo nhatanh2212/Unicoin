@@ -24,6 +24,7 @@ class MarketScreen extends StatelessWidget {
                 backgroundColor: Colors.deepPurple,
                 title: const Text("Market"),
               ),
+              
             );
           } else {
             return const Text("No market data found in the api",
