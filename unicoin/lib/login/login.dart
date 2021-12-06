@@ -8,26 +8,26 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 27, 35, 42),
       body: Container(
         padding: const EdgeInsets.all(30),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const FlutterLogo(
-              size: 150,
-            ),
+            Image.asset('logo.jpg', height: 250,),
+            SizedBox(height:50),
             LoginButton(
               text: 'Sign in with Google',
               icon: FontAwesomeIcons.google,
-              color: Colors.blue,
+              color: Color.fromARGB(255, 94, 213, 168),
               loginMethod: AuthService().googleLogin,
             ),
+            SizedBox(height:20),
             LoginButton(
               icon: FontAwesomeIcons.userNinja,
               text: 'Continue as Guest',
               loginMethod: AuthService().anonLogin,
-              color: Colors.deepPurple,
+              color: Color.fromARGB(255, 94, 213, 168),
             ),
           ],
         ),
@@ -52,21 +52,27 @@ class LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      child: ElevatedButton.icon(
-        icon: Icon(
-          icon,
-          color: Colors.white,
-          size: 20,
+      margin: EdgeInsets.symmetric(vertical: 10),
+      width: size.width * 0.8,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(29),
+        child: ElevatedButton.icon(
+          icon: Icon(
+            icon,
+            color: Colors.white,
+            size: 20,
+          ),
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.all(24),
+            backgroundColor: color,
+          ),
+          onPressed: () => loginMethod(),
+          label: Text(text, textAlign: TextAlign.center),
         ),
-        style: TextButton.styleFrom(
-          padding: const EdgeInsets.all(24),
-          backgroundColor: color,
-        ),
-        onPressed: () => loginMethod(),
-        label: Text(text, textAlign: TextAlign.center),
       ),
+      
     );
   }
 }
