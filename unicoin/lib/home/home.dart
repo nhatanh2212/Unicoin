@@ -17,7 +17,7 @@ class _HomeState extends State<HomeScreen> {
         stream: AuthService().userStream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text("Loading", textDirection: TextDirection.ltr);
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return const Center(
               child: Text("Error", textDirection: TextDirection.ltr),
