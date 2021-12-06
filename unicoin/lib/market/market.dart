@@ -26,18 +26,42 @@ class _MarketScreenState extends State<MarketScreen> {
             );
           } else if (snapshot.hasData) {
             var market = snapshot.data!;
+            num marketCap = 0;
+            for (var coin in market) {
+              marketCap += coin["market_cap"];
+            }
+
             return Scaffold(
               appBar: AppBar(
                 backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-                title: const Text("Market"),
+                title: Row(
+                  children: [
+                    Expanded(
+                        flex: 80,
+                        child: Text('Market cap \n\$$marketCap',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 15))),
+                    const Expanded(flex: 20, child: Text('USD')),
+                  ],
+                ),
               ),
               body: RefreshIndicator(
-                  onRefresh: () async {
-                    setState(() {});
-                  },
-                  child: ListView.builder(
-                      itemBuilder: (BuildContext context, index) =>
-                          MarketItem(coin: market[index], id: index))),
+                onRefresh: () async {
+                  setState(() {});
+                },
+                child: ListView.builder(
+                    itemCount: market.length,
+                    itemBuilder: (BuildContext context, index) {
+                      if (index == 0) {
+                        return Column(children: [
+                          const Title(),
+                          MarketItem(coin: market[index], id: index)
+                        ]);
+                      } else {
+                        return MarketItem(coin: market[index], id: index);
+                      }
+                    }),
+              ),
               bottomNavigationBar: const BottomNavBar(),
             );
           } else {
@@ -53,37 +77,53 @@ class Title extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: const [
-        Expanded(
-          flex: 5,
-          child: Text('#'),
-        ),
-        Expanded(
-          flex: 45,
-          child: Text('Name'),
-        ),
-        Expanded(
-          flex: 20,
-          child: Text(
-            "24h",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.grey,
+    return Container(
+      margin: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+      child: Row(
+        children: const [
+          Expanded(
+            flex: 5,
+            child: Text(
+              '#',
+              style: TextStyle(
+                color: Colors.grey,
+              ),
             ),
           ),
-        ),
-        Expanded(
-          flex: 30,
-          child: Text(
-            'Price',
-            textAlign: TextAlign.right,
-            style: TextStyle(
-              color: Colors.grey,
+          Expanded(
+            flex: 45,
+            child: Padding(
+              padding: EdgeInsets.only(left: 50),
+              child: Text(
+                'Name',
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
             ),
           ),
-        ),
-      ],
+          Expanded(
+            flex: 20,
+            child: Text(
+              "24h",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 30,
+            child: Text(
+              'Price',
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

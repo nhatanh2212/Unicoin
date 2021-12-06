@@ -8,26 +8,29 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 27, 35, 42),
+      backgroundColor: const Color.fromARGB(255, 27, 35, 42),
       body: Container(
         padding: const EdgeInsets.all(30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('logo.jpg', height: 250,),
-            SizedBox(height:50),
+            Image.asset(
+              'logo.jpg',
+              height: 250,
+            ),
+            const SizedBox(height: 50),
             LoginButton(
               text: 'Sign in with Google',
               icon: FontAwesomeIcons.google,
-              color: Color.fromARGB(255, 94, 213, 168),
+              color: const Color.fromARGB(255, 94, 213, 168),
               loginMethod: AuthService().googleLogin,
             ),
-            SizedBox(height:20),
+            const SizedBox(height: 20),
             LoginButton(
               icon: FontAwesomeIcons.userNinja,
               text: 'Continue as Guest',
               loginMethod: AuthService().anonLogin,
-              color: Color.fromARGB(255, 94, 213, 168),
+              color: const Color.fromARGB(255, 94, 213, 168),
             ),
           ],
         ),
@@ -54,7 +57,7 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       width: size.width * 0.8,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(29),
@@ -72,7 +75,6 @@ class LoginButton extends StatelessWidget {
           label: Text(text, textAlign: TextAlign.center),
         ),
       ),
-      
     );
   }
 }
