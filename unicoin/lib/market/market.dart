@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:unicoin/services/api.dart';
 
 import '../shared/error.dart';
+import '../shared/bottom_nav.dart';
 
 class MarketScreen extends StatefulWidget {
   const MarketScreen({Key? key}) : super(key: key);
@@ -35,8 +36,7 @@ class _MarketScreenState extends State<MarketScreen> {
           } else if (_market.isNotEmpty) {
             return Scaffold(
               appBar: AppBar(
-                backgroundColor:
-                    Theme.of(context).appBarTheme.backgroundColor,
+                backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
                 title: const Text("Market"),
               ),
               body: ListView.builder(
@@ -44,7 +44,8 @@ class _MarketScreenState extends State<MarketScreen> {
                 itemBuilder: (BuildContext context, index) => ListTile(
                   title: Text(_market[index]["name"]),
                 ),
-              )
+              ),
+              bottomNavigationBar: BottomNavBar(),
             );
             /*
             return Scaffold(
