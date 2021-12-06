@@ -23,7 +23,7 @@ class _HomeState extends State<HomeScreen> {
               child: Text("Error", textDirection: TextDirection.ltr),
             );
           } else if (snapshot.hasData) {
-            return MarketScreen();
+            return const MarketScreen();
           } else {
             return const LoginScreen();
           }

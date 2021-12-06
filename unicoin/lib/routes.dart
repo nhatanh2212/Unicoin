@@ -5,5 +5,5 @@ import 'package:unicoin/market/market.dart';
 var appRoutes = {
   "/": (context) => const HomeScreen(),
   "/login": (context) => const LoginScreen(),
-  "/market": (context) => MarketScreen(),
+  "/market": (context) => const MarketScreen(),
 };

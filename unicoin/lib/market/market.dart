@@ -1,15 +1,34 @@
 import "package:flutter/material.dart";
+import 'package:unicoin/services/api.dart';
 
-class MarketScreen extends StatefulWidget {
-  MarketScreen({Key? key}) : super(key: key);
+import '../shared/error.dart';
 
-  @override
-  _MarketScreenState createState() => _MarketScreenState();
-}
+class MarketScreen extends StatelessWidget {
+  const MarketScreen({Key? key}) : super(key: key);
 
-class _MarketScreenState extends State<MarketScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Text("Market screen", textDirection: TextDirection.ltr);
+    return FutureBuilder(
+        future: Api().fetchMarketData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(
+              child: ErrorMessage(message: snapshot.error.toString()),
+            );
+          } else if (snapshot.hasData) {
+            var market = snapshot.data!;
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.deepPurple,
+                title: const Text("Market"),
+              ),
+            );
+          } else {
+            return const Text("No market data found in the api",
+                textDirection: TextDirection.ltr);
+          }
+        });
   }
 }
