@@ -15,7 +15,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        backgroundColor: const Color.fromARGB(255, 27, 35, 42),
         title: Row(
           children: const [
             Expanded(
