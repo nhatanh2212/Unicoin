@@ -44,12 +44,15 @@ class _CoinScreenState extends State<CoinScreen> {
             }
 
             return Scaffold(
-              appBar: AppBar(title: Text(widget.coin["name"])),
+              appBar: AppBar(
+                  backgroundColor: const Color.fromARGB(255, 27, 35, 42),
+                  title: Text(widget.coin["name"])
+              ),
               body:
               Container(
                 decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('Background_base.png'),
+                      image: AssetImage('Background_base.jpg'),
                       fit: BoxFit.cover,
                     )),
                 child: ListView(
@@ -57,7 +60,6 @@ class _CoinScreenState extends State<CoinScreen> {
                     Container(
                       margin: const EdgeInsets.only(top: 30),
                       child: LineChartWidget(id: widget.coin["id"], days: days),
-
                     ),
                     Options(
                         chosenValue: days,
