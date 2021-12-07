@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import 'package:unicoin/market/market.dart';
 import 'package:unicoin/services/auth.dart';
 import 'package:unicoin/login/login.dart';
+import 'package:unicoin/shared/bottom_nav.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -23,6 +24,8 @@ class _HomeState extends State<HomeScreen> {
               child: Text("Error", textDirection: TextDirection.ltr),
             );
           } else if (snapshot.hasData) {
+            bottomNavigationBar:
+            const BottomNavBar();
             return const MarketScreen();
           } else {
             return const LoginScreen();

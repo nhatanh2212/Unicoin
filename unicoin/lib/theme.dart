@@ -23,6 +23,7 @@ final ThemeData darkTheme = ThemeData(
   cardColor: const Color.fromRGBO(55, 55, 55, 1.0),
   dividerColor: const Color.fromRGBO(60, 60, 60, 1.0),
   bottomAppBarColor: Colors.green.shade800,
+  visualDensity: VisualDensity.adaptivePlatformDensity,
 );
 
 final ThemeData darkThemeOLED = ThemeData(

@@ -41,7 +41,7 @@ class BottomNavBar extends StatelessWidget {
       onTap: (int idx) {
         switch (idx) {
           case 0:
-            // do nothing
+            Navigator.pushNamed(context, '/market');
             break;
           case 1:
             Navigator.pushNamed(context, '/portfolio');

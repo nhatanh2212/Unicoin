@@ -33,6 +33,7 @@ class _MarketScreenState extends State<MarketScreen> {
 
             return Scaffold(
               appBar: AppBar(
+                automaticallyImplyLeading: false,
                 backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
                 title: Row(
                   children: [
@@ -62,7 +63,7 @@ class _MarketScreenState extends State<MarketScreen> {
                       }
                     }),
               ),
-              bottomNavigationBar: const BottomNavBar(),
+              //bottomNavigationBar: const BottomNavBar(),
             );
           } else {
             return const Text("No market data found in the api",
@@ -97,7 +98,7 @@ class Title extends StatelessWidget {
               child: Text(
                 'Name',
                 style: TextStyle(
-                  color: Colors.grey,
+                  color: Color.fromARGB(255, 184, 181, 181),
                 ),
               ),
             ),
