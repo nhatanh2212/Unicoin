@@ -30,7 +30,21 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
 
             if (data.isEmpty) {
               return Scaffold(
-                  appBar: AppBar(title: const Text("Portfolios")),
+                  appBar: AppBar(
+                    automaticallyImplyLeading: false,
+                    backgroundColor: const Color.fromARGB(255, 27, 35, 42),
+                    title: Row(
+                      children: const [
+                        Expanded(
+                            child: Text('Portfolios',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25,
+                                )))
+                      ],
+                    ),
+                  ),
                   body: const Center(
                       child: Text(
                     "You do not have any portfolios yet!",
@@ -39,24 +53,47 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
             }
 
             return Scaffold(
-              appBar: AppBar(title: const Text("Portfolios")),
-              body: RefreshIndicator(
-                onRefresh: () async {
-                  setState(() {});
-                },
-                child: Column(
-                  children: [
-                    _SummaryListWidget(summary: data["summary"]),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const TransactionsScreen()));
-                      },
-                      child: const Text("Transactions"),
-                    ),
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                backgroundColor: const Color.fromARGB(255, 27, 35, 42),
+                title: Row(
+                  children: const [
+                    Expanded(
+                        child: Text('Portfolios',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                            )))
                   ],
+                ),
+              ),
+              body: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('Background_base.jpg'),
+                    fit: BoxFit.cover,
+                  )
+                ),
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    setState(() {});
+                  },
+                  child: Column(
+                    children: [
+                      _SummaryListWidget(summary: data["summary"]),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const TransactionsScreen()));
+                        },
+                        child: const Text("Transactions"),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

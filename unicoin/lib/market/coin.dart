@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:unicoin/market/lineChart.dart';
+import 'package:unicoin/portfolio/transactions_form.dart';
 import 'package:unicoin/services/firestore.dart';
 import 'package:provider/provider.dart';
 
@@ -86,6 +87,24 @@ class _CoinScreenState extends State<CoinScreen> {
                   ),
                 ],
               ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 100,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                TransactionsForm(coin: widget.coin)));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.green,
+                      ),
+                      child: const Text("Add transaction"),
+                    ),
+                  ),
+                ],
+              ),
               Container(
                   padding: const EdgeInsets.only(
                       left: 10, right: 10, top: 10, bottom: 10),
@@ -107,6 +126,7 @@ class _CoinScreenState extends State<CoinScreen> {
                         flex: 80,
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
                           child: Text(
                             '${widget.coin["name"]}',
                             style: const TextStyle(fontSize: 35),
