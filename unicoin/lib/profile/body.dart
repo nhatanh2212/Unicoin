@@ -23,6 +23,7 @@ class Body extends StatelessWidget {
                 child: Image(image: AssetImage("logo.png"))),
             const SizedBox(height: 20),
             Button(
+              color: const Color.fromARGB(255, 221, 75, 75),
               icon: FontAwesomeIcons.signInAlt,
               text: "Log out",
               press: () async {
@@ -32,16 +33,19 @@ class Body extends StatelessWidget {
               },
             ),
             Button(
+              color: const Color.fromARGB(255, 94, 213, 168),
               icon: FontAwesomeIcons.userFriends,
               text: "Join community",
               press: () => Navigator.pushNamed(context, '/community'),
             ),
             Button(
+              color: const Color.fromARGB(255, 94, 213, 168),
               icon: FontAwesomeIcons.questionCircle,
               text: "Help and Support",
               press: () => Navigator.pushNamed(context, '/support'),
             ),
             Button(
+              color: const Color.fromARGB(255, 94, 213, 168),
               icon: FontAwesomeIcons.doorOpen,
               text: "About us",
               press: () => Navigator.pushNamed(context, '/about'),
@@ -55,9 +59,11 @@ class Button extends StatelessWidget {
   final String text;
   final IconData icon;
   final VoidCallback press;
+  final Color color;
 
   const Button({
     Key? key,
+    required this.color,
     required this.icon,
     required this.text,
     required this.press,
@@ -66,15 +72,14 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
       child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
+          style: TextButton.styleFrom(
             padding: const EdgeInsets.all(10),
+            backgroundColor: color,
+            textStyle: const TextStyle(fontSize: 18),
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            primary: const Color.fromARGB(255, 94, 213, 168),
-            onPrimary: Colors.white,
-            onSurface: const Color.fromARGB(255, 24, 24, 24),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           ),
           onPressed: press,
           child: Row(
@@ -82,7 +87,7 @@ class Button extends StatelessWidget {
               Icon(
                 icon,
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 10),
               Expanded(
                   child: Text(
                 text,

@@ -37,16 +37,19 @@ class SupportScreen extends StatelessWidget {
                 const SizedBox(height: 5),
                 const SizedBox(height: 20),
                 Button(
+                  color: const Color.fromARGB(255, 94, 213, 168),
                   icon: FontAwesomeIcons.peopleCarry,
                   text: "Help center !",
                   press: () {},
                 ),
                 Button(
+                  color: const Color.fromARGB(255, 94, 213, 168),
                   icon: FontAwesomeIcons.phone,
                   text: "Contact Us",
                   press: () {},
                 ),
                 Button(
+                  color: const Color.fromARGB(255, 94, 213, 168),
                   icon: FontAwesomeIcons.handsHelping,
                   text: "Feature Requests",
                   press: () {},
@@ -60,9 +63,11 @@ class Button extends StatelessWidget {
   final String text;
   final IconData icon;
   final VoidCallback press;
+  final Color color;
 
   const Button({
     Key? key,
+    required this.color,
     required this.icon,
     required this.text,
     required this.press,
@@ -71,15 +76,14 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
       child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.all(20),
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.all(10),
+            backgroundColor: color,
+            textStyle: const TextStyle(fontSize: 18),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            primary: const Color.fromARGB(255, 94, 213, 168),
-            onPrimary: Colors.white,
-            onSurface: const Color.fromARGB(255, 24, 24, 24),
           ),
           onPressed: press,
           child: Row(
@@ -87,7 +91,7 @@ class Button extends StatelessWidget {
               Icon(
                 icon,
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 10),
               Expanded(
                   child: Text(
                 text,
