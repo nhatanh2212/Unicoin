@@ -81,20 +81,17 @@ class Button extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: const Color.fromARGB(255, 44, 44, 44),
               ),
               const SizedBox(width: 20),
               Expanded(
                   child: Text(
                 text,
                 style: const TextStyle(
-                  color: Color.fromARGB(255, 70, 70, 70),
                   fontSize: 20,
                 ),
               )),
               const Icon(
                 FontAwesomeIcons.arrowCircleRight,
-                color: Color.fromARGB(255, 48, 48, 48),
               ),
             ],
           )),

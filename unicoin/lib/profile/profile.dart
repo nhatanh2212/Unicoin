@@ -24,7 +24,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
-                      color: Color.fromARGB(255, 94, 213, 168),
                     )))
           ],
         ),

@@ -17,7 +17,6 @@ class CommunityScreen extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        color: Color.fromARGB(255, 94, 213, 168),
                       )))
             ],
           ),
