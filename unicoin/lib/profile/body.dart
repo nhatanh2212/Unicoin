@@ -28,17 +28,17 @@ class Body extends StatelessWidget {
         Button(
           icon: FontAwesomeIcons.userFriends,
           text: "Join community",
-          press: () {},
+          press: () => Navigator.pushNamed(context, '/community'),
         ),
         Button(
           icon: FontAwesomeIcons.questionCircle,
           text: "Help and Support",
-          press: () {},
+          press: () => Navigator.pushNamed(context, '/support'),
         ),
         Button(
           icon: FontAwesomeIcons.doorOpen,
           text: "About us",
-          press: () {},
+          press: () => Navigator.pushNamed(context, '/about'),
         ),
       ],
     );

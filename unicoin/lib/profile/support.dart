@@ -57,20 +57,24 @@ class Button extends StatelessWidget {
           child: Row(
             children: [
               const SizedBox(width: 20),
-              Expanded(
-                  child: Text(
-                mainText,
-                style: const TextStyle(
-                  color: Color.fromARGB(255, 70, 70, 70),
-                  fontSize: 20,
-                ),
-              )),
+              Column(
+                children: [
+                  Expanded(
+                      child: Text(
+                    mainText,
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 70, 70, 70),
+                      fontSize: 20,
+                    ),
+                  )),
+                ],
+              ),
               Expanded(
                   child: Text(
                 subText,
                 style: const TextStyle(
                   color: Color.fromARGB(255, 70, 70, 70),
-                  fontSize: 20,
+                  fontSize: 10,
                 ),
               )),
               const Icon(
