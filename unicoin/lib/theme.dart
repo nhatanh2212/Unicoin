@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,6 +15,11 @@ final ThemeData lightTheme = ThemeData(
 );
 
 final ThemeData darkTheme = ThemeData(
+  cupertinoOverrideTheme: const CupertinoThemeData(
+    textTheme: CupertinoTextThemeData(
+      dateTimePickerTextStyle: TextStyle(color: Colors.white),
+    ),
+  ),
   fontFamily: GoogleFonts.roboto().fontFamily,
   primarySwatch: Colors.green,
   brightness: Brightness.dark,

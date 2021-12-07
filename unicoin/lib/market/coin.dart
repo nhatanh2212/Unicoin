@@ -126,6 +126,7 @@ class _CoinScreenState extends State<CoinScreen> {
                         flex: 80,
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
                           child: Text(
                             '${widget.coin["name"]}',
                             style: const TextStyle(fontSize: 35),
