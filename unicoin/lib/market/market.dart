@@ -73,7 +73,6 @@ class _MarketScreenState extends State<MarketScreen> {
                       }),
                 ),
               ),
-              bottomNavigationBar: BottomNavBar(),
             );
           } else {
             return const Text("No market data found in the api",

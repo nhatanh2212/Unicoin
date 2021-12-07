@@ -71,7 +71,6 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                       }),
                 ),
               ),
-              bottomNavigationBar: BottomNavBar(),
             );
           } else {
             return const Text("No market data found in the api",

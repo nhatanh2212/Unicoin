@@ -60,7 +60,6 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                   ],
                 ),
               ),
-              bottomNavigationBar: BottomNavBar(),
             );
           } else {
             return const Text("No market data found in the api",
