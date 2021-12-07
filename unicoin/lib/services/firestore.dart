@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rxdart/src/transformers/switch_map.dart';
 import 'package:unicoin/services/api.dart';
 import 'package:unicoin/services/auth.dart';
-import 'package:rxdart/rxdart.dart';
 
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+
   Future<List> getFavourites() async {
     final user = AuthService().user!;
     try {
@@ -62,5 +63,29 @@ class FirestoreService {
         ]);
       }
     });
+  }
+
+  Future<Map> getSummary() async {
+    final user = AuthService().user!;
+
+    try {
+      var ref = _db.collection('users').doc(user.uid).collection("portfolios");
+      var snapshot = await ref.orderBy("creationTime").limit(1).get();
+
+      if (snapshot.size > 0) {
+        // var favouriteCoinsData = await Api().fetchMarketData(coins: data["favourites"]);
+        var data = snapshot.docs[0];
+
+        return {
+          "name": data["name"],
+          "summary": data["summary"]
+        };
+      } else {
+        return {};
+      }
+    } catch(error) {
+      print(error);
+      return {};
+    }
   }
 }
