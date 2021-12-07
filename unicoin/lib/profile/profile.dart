@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:unicoin/shared/bottom_nav.dart';
 import 'package:unicoin/profile/body.dart';
-import 'package:unicoin/services/auth.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -30,7 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       ),
-      body: Body(),
+      body: const Body(),
       bottomNavigationBar: const BottomNavBar(),
     );
   }
