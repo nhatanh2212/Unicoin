@@ -30,7 +30,9 @@ class _MarketScreenState extends State<MarketScreen> {
             for (var coin in market) {
               marketCap += coin["market_cap"];
             }
-
+            market.sort(
+                (a, b) => a["current_price"].compareTo(b["current_price"]));
+            market = market.reversed.toList();
             return Scaffold(
               appBar: AppBar(
                 backgroundColor: const Color.fromARGB(255, 27, 35, 42),

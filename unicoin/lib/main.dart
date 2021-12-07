@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
 import 'package:unicoin/routes.dart';
+import 'package:unicoin/services/api.dart';
+import 'package:unicoin/services/firestore.dart';
 import 'package:unicoin/theme.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,9 +45,10 @@ class _AppState extends State<App> {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return MaterialApp(
-            routes: appRoutes,
-            theme: darkTheme
+          return StreamProvider(
+            child: MaterialApp(routes: appRoutes, theme: darkTheme),
+            create: (_) => FirestoreService().streamFavourite(),
+            initialData: const {"favourites": []},
           );
         }
 

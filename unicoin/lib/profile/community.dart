@@ -37,19 +37,19 @@ class CommunityScreen extends StatelessWidget {
                 const SizedBox(height: 5),
                 const SizedBox(height: 20),
                 Button(
-                  color: Color.fromARGB(255, 28, 69, 180),
+                  color: const Color.fromARGB(255, 28, 69, 180),
                   icon: FontAwesomeIcons.facebook,
                   text: "Like us on Facebook",
                   press: () {},
                 ),
                 Button(
-                  color: Color.fromARGB(255, 101, 201, 214),
+                  color: const Color.fromARGB(255, 101, 201, 214),
                   icon: FontAwesomeIcons.twitter,
                   text: "Like us on Twitter",
                   press: () {},
                 ),
                 Button(
-                  color: Color.fromARGB(255, 207, 40, 118),
+                  color: const Color.fromARGB(255, 207, 40, 118),
                   icon: FontAwesomeIcons.instagram,
                   text: "Like us on Instagram",
                   press: () {},

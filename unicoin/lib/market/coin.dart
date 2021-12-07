@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:unicoin/market/lineChart.dart';
 import 'package:unicoin/services/firestore.dart';
-import '../shared/error.dart';
+import 'package:provider/provider.dart';
 
 class CoinScreen extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
@@ -24,572 +24,497 @@ class _CoinScreenState extends State<CoinScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List>(
-        future: FirestoreService().getFavourites(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(
-              child: ErrorMessage(message: snapshot.error.toString()),
-            );
-          } else if (snapshot.hasData) {
-            var favourites = snapshot.data!;
-            bool isAFavourite = false;
-            for (var favourite in favourites) {
-              if (favourite["id"] == widget.coin["id"]) {
-                isAFavourite = true;
-                break;
-              }
-            }
+    var user = Provider.of<Map>(context);
+    bool isAFavourite = false;
+    for (var favourite in user["favourites"]) {
+      if (favourite == widget.coin["id"]) {
+        isAFavourite = true;
+        break;
+      }
+    }
 
-            return Scaffold(
-              appBar: AppBar(
-                  backgroundColor: const Color.fromARGB(255, 27, 35, 42),
-                  title: Text(widget.coin["name"])
-              ),
-              body:
+    return Scaffold(
+        appBar: AppBar(
+            backgroundColor: const Color.fromARGB(255, 27, 35, 42),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(widget.coin["name"]),
+                const Text("USD"),
+              ],
+            )),
+        body: Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+            image: AssetImage('Background_base.jpg'),
+            fit: BoxFit.cover,
+          )),
+          child: ListView(
+            children: <Widget>[
               Container(
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('Background_base.jpg'),
-                      fit: BoxFit.cover,
-                    )),
-                child: ListView(
-                  children: <Widget>[
-                    Container(
-                      margin: const EdgeInsets.only(top: 30),
-                      child: LineChartWidget(id: widget.coin["id"], days: days),
-                    ),
-                    Options(
-                        chosenValue: days,
-                        changeStateFunction: (d) {
-                          setState(() {
-                            days = d;
-                          });
-                        }),
-                    Row(
-                      children: [
-                        Expanded(
-                            flex: 100,
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  if (isAFavourite) {
-                                    FirestoreService()
-                                        .removeFavourite(widget.coin["id"]);
-                                  } else {
-                                    FirestoreService()
-                                        .addFavourite(widget.coin["id"]);
-                                  }
-                                  setState(() {});
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  primary: isAFavourite
-                                      ? Colors.grey.shade600
-                                      : Colors.red.shade500,
-                                ),
-                                child: Text(isAFavourite
-                                    ? "Remove from favourite"
-                                    : "Add to favourite")),
+                margin: const EdgeInsets.only(top: 30),
+                child: LineChartWidget(id: widget.coin["id"], days: days),
+              ),
+              Options(
+                  chosenValue: days,
+                  changeStateFunction: (d) {
+                    setState(() {
+                      days = d;
+                    });
+                  }),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 100,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          if (isAFavourite) {
+                            FirestoreService()
+                                .removeFavourite(widget.coin["id"]);
+                          } else {
+                            FirestoreService().addFavourite(widget.coin["id"]);
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: isAFavourite
+                              ? Colors.grey.shade600
+                              : Colors.red.shade500,
                         ),
-                      ],
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Image.network(widget.coin["image"], width: 45, height: 45),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  '${widget.coin["name"]}',
-                                  style: TextStyle(fontSize: 35)
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  'CURRENT PRICE:',
-                                  style: TextStyle(fontSize: 12)
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                '\$${widget.coin["current_price"]}',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: (widget.coin["price_change_percentage_24h"] < 0)
-                                        ? Colors.red
-                                        : Colors.green,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  'MARKET CAP:',
-                                  style: TextStyle(fontSize: 12)
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                  '\$${widget.coin["market_cap"]}',
-                                  style: TextStyle(fontSize: 15)
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  'MARKET CAP RANK:',
-                                  style: TextStyle(fontSize: 12)
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                  '${widget.coin["market_cap_rank"]}',
-                                  style: TextStyle(fontSize: 15)
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  'TOTAL VOLUME:',
-                                  style: TextStyle(fontSize: 12)
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                  '\$${widget.coin["total_volume"]}',
-                                  style: TextStyle(fontSize: 15)
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  'HIGH 24H:',
-                                  style: TextStyle(fontSize: 12)
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                  '${widget.coin["high_24h"]}',
-                                  style: TextStyle(fontSize: 15)
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  'LOW 24H:',
-                                  style: TextStyle(fontSize: 12)
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                  '${widget.coin["low_24h"]}',
-                                  style: TextStyle(fontSize: 15)
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  'PRICE CHANGE 24H:',
-                                  style: TextStyle(fontSize: 12)
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                  '${widget.coin["price_change_24h"]}',
-                                  style: TextStyle(fontSize: 15)
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  'MARKET CAP CHANGE 24H:',
-                                  style: TextStyle(fontSize: 12)
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                  '${widget.coin["market_cap_change_24h"]}',
-                                  style: TextStyle(fontSize: 15)
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  'CIRCULATING SUPPLY:',
-                                  style: TextStyle(fontSize: 12)
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                  '${widget.coin["circulating_supply"]}',
-                                  style: TextStyle(fontSize: 15)
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  'TOTAL SUPPLY:',
-                                  style: TextStyle(fontSize: 12)
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                  '${widget.coin["total_supply"]}',
-                                  style: TextStyle(fontSize: 15)
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  'MAX SUPPLY:',
-                                  style: TextStyle(fontSize: 12)
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                  '${widget.coin["max_supply"]}',
-                                  style: TextStyle(fontSize: 15)
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  'ATH:',
-                                  style: TextStyle(fontSize: 12)
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                  '${widget.coin["ath"]}',
-                                  style: TextStyle(fontSize: 15)
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  'ATH CHANGE PERCENTAGE:',
-                                  style: TextStyle(fontSize: 12)
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                  '${widget.coin["ath_change_percentage"]}',
-                                  style: TextStyle(fontSize: 15)
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  'ATH DATE:',
-                                  style: TextStyle(fontSize: 12)
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                  '${widget.coin["ath_date"].substring(0, 10)}',
-                                  style: TextStyle(fontSize: 15)
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  'ATL:',
-                                  style: TextStyle(fontSize: 12)
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                  '${widget.coin["atl"]}',
-                                  style: TextStyle(fontSize: 15)
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  'ATL CHANGE PERCENTAGE:',
-                                  style: TextStyle(fontSize: 12)
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                  '${widget.coin["atl_change_percentage"]}',
-                                  style: TextStyle(fontSize: 15)
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    Container(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Theme.of(context).dividerColor))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                  'ATL DATE:',
-                                  style: TextStyle(fontSize: 12)
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                  '${widget.coin["atl_date"].substring(0, 10)}',
-                                  style: TextStyle(fontSize: 15)
-                              ),
-                            ),
-                          ],
-                        )
-                    )
-                  ],
-                ),
-              )
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        });
+                        child: Text(isAFavourite
+                            ? "Remove from favourite"
+                            : "Add to favourite")),
+                  ),
+                ],
+              ),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 20,
+                        child: Image.network(widget.coin["image"],
+                            width: 50, height: 50),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        flex: 80,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text('${widget.coin["name"]}',
+                              style: const TextStyle(fontSize: 35)),
+                        ),
+                      )
+                    ],
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        flex: 2,
+                        child: Text('CURRENT PRICE:',
+                            style: TextStyle(fontSize: 12)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          '\$${widget.coin["current_price"]}',
+                          style: TextStyle(
+                              fontSize: 15,
+                              color:
+                                  (widget.coin["price_change_percentage_24h"] <
+                                          0)
+                                      ? Colors.red
+                                      : Colors.green,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        flex: 2,
+                        child:
+                            Text('MARKET CAP:', style: TextStyle(fontSize: 12)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text('\$${widget.coin["market_cap"]}',
+                            style: const TextStyle(fontSize: 15)),
+                      ),
+                    ],
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        flex: 2,
+                        child: Text('MARKET CAP RANK:',
+                            style: TextStyle(fontSize: 12)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text('${widget.coin["market_cap_rank"]}',
+                            style: const TextStyle(fontSize: 15)),
+                      ),
+                    ],
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        flex: 2,
+                        child: Text('TOTAL VOLUME:',
+                            style: TextStyle(fontSize: 12)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text('\$${widget.coin["total_volume"]}',
+                            style: const TextStyle(fontSize: 15)),
+                      ),
+                    ],
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        flex: 2,
+                        child:
+                            Text('HIGH 24H:', style: TextStyle(fontSize: 12)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text('\$${widget.coin["high_24h"]}',
+                            style: const TextStyle(fontSize: 15)),
+                      ),
+                    ],
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        flex: 2,
+                        child: Text('LOW 24H:', style: TextStyle(fontSize: 12)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text('\$${widget.coin["low_24h"]}',
+                            style: const TextStyle(fontSize: 15)),
+                      ),
+                    ],
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        flex: 2,
+                        child: Text('PRICE CHANGE 24H:',
+                            style: TextStyle(fontSize: 12)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text('${widget.coin["price_change_24h"]}',
+                            style: const TextStyle(fontSize: 15)),
+                      ),
+                    ],
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        flex: 2,
+                        child: Text('MARKET CAP CHANGE 24H:',
+                            style: TextStyle(fontSize: 12)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text('${widget.coin["market_cap_change_24h"]}',
+                            style: const TextStyle(fontSize: 15)),
+                      ),
+                    ],
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        flex: 2,
+                        child: Text('CIRCULATING SUPPLY:',
+                            style: TextStyle(fontSize: 12)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text('${widget.coin["circulating_supply"]}',
+                            style: const TextStyle(fontSize: 15)),
+                      ),
+                    ],
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        flex: 2,
+                        child: Text('TOTAL SUPPLY:',
+                            style: TextStyle(fontSize: 12)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text('${widget.coin["total_supply"]}',
+                            style: const TextStyle(fontSize: 15)),
+                      ),
+                    ],
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        flex: 2,
+                        child:
+                            Text('MAX SUPPLY:', style: TextStyle(fontSize: 12)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text('${widget.coin["max_supply"]}',
+                            style: const TextStyle(fontSize: 15)),
+                      ),
+                    ],
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        flex: 2,
+                        child: Text('ATH:', style: TextStyle(fontSize: 12)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text('\$${widget.coin["ath"]}',
+                            style: const TextStyle(fontSize: 15)),
+                      ),
+                    ],
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        flex: 2,
+                        child: Text('ATH CHANGE PERCENTAGE:',
+                            style: TextStyle(fontSize: 12)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text('${widget.coin["ath_change_percentage"]}%',
+                            style: const TextStyle(fontSize: 15)),
+                      ),
+                    ],
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        flex: 2,
+                        child:
+                            Text('ATH DATE:', style: TextStyle(fontSize: 12)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                            '${widget.coin["ath_date"].substring(0, 10)}',
+                            style: const TextStyle(fontSize: 15)),
+                      ),
+                    ],
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        flex: 2,
+                        child: Text('ATL:', style: TextStyle(fontSize: 12)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text('\$${widget.coin["atl"]}',
+                            style: const TextStyle(fontSize: 15)),
+                      ),
+                    ],
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        flex: 2,
+                        child: Text('ATL CHANGE PERCENTAGE:',
+                            style: TextStyle(fontSize: 12)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text('${widget.coin["atl_change_percentage"]}%',
+                            style: const TextStyle(fontSize: 15)),
+                      ),
+                    ],
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        flex: 2,
+                        child:
+                            Text('ATL DATE:', style: TextStyle(fontSize: 12)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                            '${widget.coin["atl_date"].substring(0, 10)}',
+                            style: const TextStyle(fontSize: 15)),
+                      ),
+                    ],
+                  ))
+            ],
+          ),
+        ));
   }
 }
 

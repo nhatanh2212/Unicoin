@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
-import 'package:unicoin/services/firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:unicoin/services/api.dart';
 
 import '../market/market_item.dart';
 import '../shared/bottom_nav.dart';
@@ -15,8 +16,10 @@ class FavouriteScreen extends StatefulWidget {
 class _FavouriteScreenState extends State<FavouriteScreen> {
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<Map>(context);
+    var data = user["favourites"];
     return FutureBuilder<List>(
-        future: FirestoreService().getFavourites(),
+        future: Api().fetchMarketData(coins: data),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

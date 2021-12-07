@@ -10,6 +10,7 @@ class Api {
   Future<List> fetchMarketData({List? coins}) async {
     String query = "";
     if (coins != null) {
+      if (coins.isEmpty) return [];
       coins.asMap().forEach((index, coin) {
         query += coin!;
         if (index != coins.length - 1) query += ",";

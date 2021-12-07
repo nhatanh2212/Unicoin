@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:unicoin/services/api.dart';
 import 'package:unicoin/services/auth.dart';
+import 'package:rxdart/rxdart.dart';
 
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -48,5 +49,18 @@ class FirestoreService {
       };
       await ref.set(data, SetOptions(merge: true));
     } catch (error) {}
+  }
+
+  Stream<Map?> streamFavourite() {
+    return AuthService().userStream.switchMap((user) {
+      if (user != null) {
+        var ref = _db.collection('users').doc(user.uid);
+        return ref.snapshots().map((doc) => doc.data());
+      } else {
+        return Stream.fromIterable([
+          {"favourites": []}
+        ]);
+      }
+    });
   }
 }
