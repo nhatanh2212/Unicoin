@@ -44,12 +44,6 @@ class Body extends StatelessWidget {
               text: "Help and Support",
               press: () => Navigator.pushNamed(context, '/support'),
             ),
-            Button(
-              color: const Color.fromARGB(255, 94, 213, 168),
-              icon: FontAwesomeIcons.doorOpen,
-              text: "About us",
-              press: () => Navigator.pushNamed(context, '/about'),
-            ),
           ],
         ));
   }
