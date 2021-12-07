@@ -8,46 +8,46 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
+    return Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
           image: AssetImage('Background.jpg'),
           fit: BoxFit.cover,
-        ))),
-        const SizedBox(height: 20),
-        const SizedBox(
-            height: 200,
-            width: 200,
-            child: Image(image: AssetImage("logo.png"))),
-        const SizedBox(height: 20),
-        Button(
-          icon: FontAwesomeIcons.signInAlt,
-          text: "Log out",
-          press: () async {
-            await AuthService().signOut();
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil('/', (route) => false);
-          },
-        ),
-        Button(
-          icon: FontAwesomeIcons.userFriends,
-          text: "Join community",
-          press: () => Navigator.pushNamed(context, '/community'),
-        ),
-        Button(
-          icon: FontAwesomeIcons.questionCircle,
-          text: "Help and Support",
-          press: () => Navigator.pushNamed(context, '/support'),
-        ),
-        Button(
-          icon: FontAwesomeIcons.doorOpen,
-          text: "About us",
-          press: () => Navigator.pushNamed(context, '/about'),
-        ),
-      ],
-    );
+        )),
+        child: ListView(
+          children: [
+            const SizedBox(height: 20),
+            const SizedBox(
+                height: 200,
+                width: 200,
+                child: Image(image: AssetImage("logo.png"))),
+            const SizedBox(height: 20),
+            Button(
+              icon: FontAwesomeIcons.signInAlt,
+              text: "Log out",
+              press: () async {
+                await AuthService().signOut();
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil('/', (route) => false);
+              },
+            ),
+            Button(
+              icon: FontAwesomeIcons.userFriends,
+              text: "Join community",
+              press: () => Navigator.pushNamed(context, '/community'),
+            ),
+            Button(
+              icon: FontAwesomeIcons.questionCircle,
+              text: "Help and Support",
+              press: () => Navigator.pushNamed(context, '/support'),
+            ),
+            Button(
+              icon: FontAwesomeIcons.doorOpen,
+              text: "About us",
+              press: () => Navigator.pushNamed(context, '/about'),
+            ),
+          ],
+        ));
   }
 }
 

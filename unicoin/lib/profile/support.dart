@@ -8,7 +8,7 @@ class SupportScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          backgroundColor: const Color.fromARGB(255, 27, 35, 42),
           title: Row(
             children: const [
               Expanded(
@@ -17,38 +17,42 @@ class SupportScreen extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        color: Color.fromARGB(255, 94, 213, 168),
                       )))
             ],
           ),
         ),
         body: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+              image: AssetImage('Background.jpg'),
+              fit: BoxFit.cover,
+            )),
             child: Column(
-          children: [
-            const SizedBox(height: 20),
-            const SizedBox(
-                height: 200,
-                width: 200,
-                child: Image(image: AssetImage("logo.png"))),
-            const SizedBox(height: 5),
-            const SizedBox(height: 20),
-            Button(
-              icon: FontAwesomeIcons.peopleCarry,
-              text: "Help center !",
-              press: () {},
-            ),
-            Button(
-              icon: FontAwesomeIcons.phone,
-              text: "Contact Us",
-              press: () {},
-            ),
-            Button(
-              icon: FontAwesomeIcons.handsHelping,
-              text: "Feature Requests",
-              press: () {},
-            ),
-          ],
-        )));
+              children: [
+                const SizedBox(height: 20),
+                const SizedBox(
+                    height: 200,
+                    width: 200,
+                    child: Image(image: AssetImage("logo.png"))),
+                const SizedBox(height: 5),
+                const SizedBox(height: 20),
+                Button(
+                  icon: FontAwesomeIcons.peopleCarry,
+                  text: "Help center !",
+                  press: () {},
+                ),
+                Button(
+                  icon: FontAwesomeIcons.phone,
+                  text: "Contact Us",
+                  press: () {},
+                ),
+                Button(
+                  icon: FontAwesomeIcons.handsHelping,
+                  text: "Feature Requests",
+                  press: () {},
+                ),
+              ],
+            )));
   }
 }
 
@@ -82,20 +86,17 @@ class Button extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: const Color.fromARGB(255, 44, 44, 44),
               ),
               const SizedBox(width: 20),
               Expanded(
                   child: Text(
                 text,
                 style: const TextStyle(
-                  color: Color.fromARGB(255, 29, 28, 28),
                   fontSize: 20,
                 ),
               )),
               const Icon(
                 FontAwesomeIcons.arrowCircleRight,
-                color: Color.fromARGB(255, 48, 48, 48),
               ),
             ],
           )),
