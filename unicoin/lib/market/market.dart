@@ -16,6 +16,7 @@ class _MarketScreenState extends State<MarketScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List>(
+
         future: Api().fetchMarketData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -33,36 +34,45 @@ class _MarketScreenState extends State<MarketScreen> {
 
             return Scaffold(
               appBar: AppBar(
-                automaticallyImplyLeading: false,
-                backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+                backgroundColor: const Color.fromARGB(255, 27, 35, 42),
+                toolbarHeight: 80,
                 title: Row(
                   children: [
                     Expanded(
                         flex: 80,
-                        child: Text('Market cap \n\$$marketCap',
+                        child: Text('Market cap\n\$$marketCap',
                             textAlign: TextAlign.center,
                             style: const TextStyle(fontSize: 15))),
                     const Expanded(flex: 20, child: Text('USD')),
                   ],
                 ),
+                automaticallyImplyLeading: false,
               ),
-              body: RefreshIndicator(
-                onRefresh: () async {
-                  setState(() {});
-                },
-                child: ListView.builder(
-                    itemCount: market.length,
-                    itemBuilder: (BuildContext context, index) {
-                      if (index == 0) {
-                        return Column(children: [
-                          const Title(),
-                          MarketItem(coin: market[index], id: index)
-                        ]);
-                      } else {
-                        return MarketItem(coin: market[index], id: index);
-                      }
-                    }),
+              body: Container(
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('Background_base.png'),
+                      fit: BoxFit.cover,
+                )),
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    setState(() {});
+                  },
+                  child: ListView.builder(
+                      itemCount: market.length,
+                      itemBuilder: (BuildContext context, index) {
+                        if (index == 0) {
+                          return Column(children: [
+                            const Title(),
+                            MarketItem(coin: market[index], id: index)
+                          ]);
+                        } else {
+                          return MarketItem(coin: market[index], id: index);
+                        }
+                      }),
+                ),
               ),
+
               bottomNavigationBar: const BottomNavBar(),
             );
           } else {

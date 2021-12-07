@@ -35,7 +35,7 @@ class MarketItem extends StatelessWidget {
               ),
               Expanded(
                 flex: 35,
-                child: Text('${coin["name"]}'),
+                child: Text('${coin["name"]}', style: TextStyle(fontSize: 15)),
               ),
               Expanded(
                 flex: 20,
@@ -43,6 +43,7 @@ class MarketItem extends StatelessWidget {
                   coin["price_change_percentage_24h"].toStringAsFixed(2) + "%",
                   textAlign: TextAlign.center,
                   style: TextStyle(
+                      fontSize: 12,
                       color: (coin["price_change_percentage_24h"] < 0)
                           ? Colors.red
                           : Colors.green,
@@ -55,6 +56,7 @@ class MarketItem extends StatelessWidget {
                   '\$${coin["current_price"]}',
                   textAlign: TextAlign.right,
                   style: TextStyle(
+                      fontSize: 12,
                       color: (coin["price_change_percentage_24h"] < 0)
                           ? Colors.red
                           : Colors.green,
