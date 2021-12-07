@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import 'package:unicoin/services/firestore.dart';
 import 'package:unicoin/services/api.dart';
 
+import 'transactions.dart';
 import 'summary_item.dart';
 import '../shared/bottom_nav.dart';
 import '../shared/error.dart';
@@ -44,7 +45,20 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                 onRefresh: () async {
                   setState(() {});
                 },
-                child: _SummaryListWidget(summary: data["summary"]),
+                child: Column(
+                  children: [
+                    _SummaryListWidget(summary: data["summary"]),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const TransactionsScreen()));
+                      },
+                      child: const Text("Transactions"),
+                    ),
+                  ],
+                ),
               ),
               bottomNavigationBar: BottomNavBar(),
             );

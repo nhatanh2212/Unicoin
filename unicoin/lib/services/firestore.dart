@@ -52,19 +52,6 @@ class FirestoreService {
     } catch (error) {}
   }
 
-  Stream<Map?> streamFavourite() {
-    return AuthService().userStream.switchMap((user) {
-      if (user != null) {
-        var ref = _db.collection('users').doc(user.uid);
-        return ref.snapshots().map((doc) => doc.data());
-      } else {
-        return Stream.fromIterable([
-          {"favourites": []}
-        ]);
-      }
-    });
-  }
-
   Future<Map> getSummary() async {
     final user = AuthService().user!;
 
@@ -87,5 +74,39 @@ class FirestoreService {
       print(error);
       return {};
     }
+  }
+
+  Future<List> getTransactions() async {
+    final user = AuthService().user!;
+
+    try {
+      var ref = _db.collection('users').doc(user.uid).collection("portfolios");
+      var snapshot = await ref.orderBy("creationTime").limit(1).get();
+
+      if (snapshot.size > 0) {
+        // var favouriteCoinsData = await Api().fetchMarketData(coins: data["favourites"]);
+        var data = snapshot.docs[0];
+
+        return data["transactions"];
+      } else {
+        return [];
+      }
+    } catch(error) {
+      print(error);
+      return [];
+    }
+  }
+
+  Stream<Map?> streamFavourite() {
+    return AuthService().userStream.switchMap((user) {
+      if (user != null) {
+        var ref = _db.collection('users').doc(user.uid);
+        return ref.snapshots().map((doc) => doc.data());
+      } else {
+        return Stream.fromIterable([
+          {"favourites": []}
+        ]);
+      }
+    });
   }
 }
