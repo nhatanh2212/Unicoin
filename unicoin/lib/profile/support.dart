@@ -4,40 +4,64 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class SupportScreen extends StatelessWidget {
   const SupportScreen({Key? key}) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
-        SizedBox(height: 20),
-        SizedBox(
-            height: 200,
-            width: 200,
-            child: Image(image: AssetImage("logo.png"))),
-        SizedBox(height: 20),
-        Button(
-          mainText: "Help center",
-          subText:
-              "You can check our Help Center for more common Question and tutorials.",
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          title: Row(
+            children: const [
+              Expanded(
+                  child: Text('Join our community',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Color.fromARGB(255, 94, 213, 168),
+                      )))
+            ],
+          ),
         ),
-        Button(
-          mainText: "Contact Us",
-          subText: "If you have any questions, feel free to contact us.",
-        ),
-        Button(
-          mainText: "Feature Requests",
-          subText: "If you have any requests, feel free to message us.",
-        ),
-      ],
-    );
+        body: Container(
+            child: Column(
+          children: [
+            const SizedBox(height: 20),
+            const SizedBox(
+                height: 200,
+                width: 200,
+                child: Image(image: AssetImage("logo.png"))),
+            const SizedBox(height: 5),
+            SizedBox(height: 20),
+            Button(
+              icon: FontAwesomeIcons.peopleCarry,
+              text: "Help center !",
+              press: () {},
+            ),
+            Button(
+              icon: FontAwesomeIcons.phone,
+              text: "Contact Us",
+              press: () {},
+            ),
+            Button(
+              icon: FontAwesomeIcons.handsHelping,
+              text: "Feature Requests",
+              press: () {},
+            ),
+          ],
+        )));
   }
 }
 
 class Button extends StatelessWidget {
-  final String mainText, subText;
+  final String text;
+  final IconData icon;
+  final VoidCallback press;
 
   const Button({
     Key? key,
-    required this.mainText,
-    required this.subText,
+    required this.icon,
+    required this.text,
+    required this.press,
   }) : super(key: key);
 
   @override
@@ -53,28 +77,20 @@ class Button extends StatelessWidget {
             onPrimary: Colors.white,
             onSurface: Color.fromARGB(255, 24, 24, 24),
           ),
-          onPressed: () {},
+          onPressed: press,
           child: Row(
             children: [
-              const SizedBox(width: 20),
-              Column(
-                children: [
-                  Expanded(
-                      child: Text(
-                    mainText,
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 70, 70, 70),
-                      fontSize: 20,
-                    ),
-                  )),
-                ],
+              Icon(
+                icon,
+                color: Color.fromARGB(255, 44, 44, 44),
               ),
+              const SizedBox(width: 20),
               Expanded(
                   child: Text(
-                subText,
+                text,
                 style: const TextStyle(
-                  color: Color.fromARGB(255, 70, 70, 70),
-                  fontSize: 10,
+                  color: Color.fromARGB(255, 29, 28, 28),
+                  fontSize: 20,
                 ),
               )),
               const Icon(
