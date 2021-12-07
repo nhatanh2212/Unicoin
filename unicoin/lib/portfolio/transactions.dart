@@ -29,12 +29,34 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
             var transactions = snapshot.data!;
 
             return Scaffold(
-              appBar: AppBar(title: const Text("Transactions")),
-              body: RefreshIndicator(
-                onRefresh: () async {
-                  setState(() {});
-                },
-                child: _TransactionsListWidget(transactions: transactions),
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                backgroundColor: const Color.fromARGB(255, 27, 35, 42),
+                title: Row(
+                  children: const [
+                    Expanded(
+                        child: Text('Transactions',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                            )))
+                  ],
+                ),
+              ),
+              body: Container(
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('Background_base.jpg'),
+                      fit: BoxFit.cover,
+                    )
+                ),
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    setState(() {});
+                  },
+                  child: _TransactionsListWidget(transactions: transactions),
+                ),
               ),
             );
           } else {
