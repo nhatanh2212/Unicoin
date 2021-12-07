@@ -12,7 +12,7 @@ class LoginScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
             image: DecorationImage(
-          image: AssetImage('Background.png'),
+          image: AssetImage('Background.jpg'),
           fit: BoxFit.cover,
         )),
         padding: const EdgeInsets.all(30),
@@ -75,7 +75,7 @@ class LoginButton extends StatelessWidget {
           style: TextButton.styleFrom(
             padding: const EdgeInsets.all(24),
             backgroundColor: color,
-            textStyle: TextStyle(fontSize: 18),
+            textStyle: const TextStyle(fontSize: 18),
           ),
           onPressed: () => loginMethod(),
           label: Text(text, textAlign: TextAlign.center),

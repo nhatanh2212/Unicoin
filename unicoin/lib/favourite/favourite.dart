@@ -49,7 +49,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                       return MarketItem(coin: data[index], id: index);
                     }),
               ),
-              bottomNavigationBar: const BottomNavBar(),
+              bottomNavigationBar: BottomNavBar(),
             );
           } else {
             return const Text("No market data found in the api",

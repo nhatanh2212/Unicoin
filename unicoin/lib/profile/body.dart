@@ -11,7 +11,7 @@ class Body extends StatelessWidget {
         Container(
             decoration: const BoxDecoration(
                 image: DecorationImage(
-          image: AssetImage('Background.png'),
+          image: AssetImage('Background.jpg'),
           fit: BoxFit.cover,
         ))),
         const SizedBox(height: 20),

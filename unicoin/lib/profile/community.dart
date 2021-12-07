@@ -13,7 +13,7 @@ class CommunityScreen extends StatelessWidget {
             height: 200,
             width: 200,
             child: Image(image: AssetImage("logo.png"))),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Button(
           icon: FontAwesomeIcons.facebook,
           text: "Like us on Facebook",
@@ -55,16 +55,16 @@ class Button extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            primary: Color.fromARGB(255, 94, 213, 168),
+            primary: const Color.fromARGB(255, 94, 213, 168),
             onPrimary: Colors.white,
-            onSurface: Color.fromARGB(255, 24, 24, 24),
+            onSurface: const Color.fromARGB(255, 24, 24, 24),
           ),
           onPressed: press,
           child: Row(
             children: [
               Icon(
                 icon,
-                color: Color.fromARGB(255, 44, 44, 44),
+                color: const Color.fromARGB(255, 44, 44, 44),
               ),
               const SizedBox(width: 20),
               Expanded(

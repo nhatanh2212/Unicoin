@@ -30,7 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       body: const Body(),
-      bottomNavigationBar: const BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(),
     );
   }
 }
