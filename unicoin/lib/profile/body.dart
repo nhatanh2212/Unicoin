@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../services/auth.dart';
+
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);
 
@@ -23,7 +25,11 @@ class Body extends StatelessWidget {
         Button(
           icon: FontAwesomeIcons.signInAlt,
           text: "Log out",
-          press: () {},
+          press: () async {
+            await AuthService().signOut();
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil('/', (route) => false);
+          },
         ),
         Button(
           icon: FontAwesomeIcons.userFriends,
