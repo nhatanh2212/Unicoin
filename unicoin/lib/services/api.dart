@@ -7,12 +7,19 @@ import 'dart:convert';
 class Api {
   final String _url = "https://api.coingecko.com/api/v3";
 
-  Future<List> fetchMarketData() async {
+  Future<List> fetchMarketData({List? coins}) async {
     String query = "";
-    supportedCoins.asMap().forEach((index, coin) {
-      query += coin["id"]!;
-      if (index != supportedCoins.length - 1) query += ",";
-    });
+    if (coins != null) {
+      coins.asMap().forEach((index, coin) {
+        query += coin!;
+        if (index != coins.length - 1) query += ",";
+      });
+    } else {
+      supportedCoins.asMap().forEach((index, coin) {
+        query += coin["id"]!;
+        if (index != supportedCoins.length - 1) query += ",";
+      });
+    }
 
     try {
       final response = await http
@@ -28,6 +35,7 @@ class Api {
     String formattedDays = (days == -1) ? "max" : days.toString();
     String query =
         "/coins/${id}/market_chart?days=${formattedDays}&vs_currency=usd";
+    if (days == -1) query += "&interval=daily";
     try {
       final response = await http.get(Uri.parse(_url + query));
       final data = jsonDecode(response.body) as Map;

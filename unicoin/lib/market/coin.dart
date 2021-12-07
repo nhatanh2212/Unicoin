@@ -1,5 +1,8 @@
 import "package:flutter/material.dart";
 import 'package:unicoin/market/lineChart.dart';
+import 'package:unicoin/services/firestore.dart';
+
+import '../shared/error.dart';
 
 class CoinScreen extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
@@ -22,24 +25,72 @@ class _CoinScreenState extends State<CoinScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.coin["name"])),
-      body: ListView(
-        children: [
-          Container(
-            margin: const EdgeInsets.only(top: 30),
-            child: LineChartWidget(id: widget.coin["id"], days: days),
-          ),
-          Options(
-              chosenValue: days,
-              changeStateFunction: (d) {
-                setState(() {
-                  days = d;
-                });
-              })
-        ],
-      ),
-    );
+    return FutureBuilder<List>(
+        future: FirestoreService().getFavourites(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(
+              child: ErrorMessage(message: snapshot.error.toString()),
+            );
+          } else if (snapshot.hasData) {
+            var favourites = snapshot.data!;
+            bool isAFavourite = false;
+            for (var favourite in favourites) {
+              if (favourite["id"] == widget.coin["id"]) {
+                isAFavourite = true;
+                break;
+              }
+            }
+
+            return Scaffold(
+              appBar: AppBar(title: Text(widget.coin["name"])),
+              body: ListView(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 30),
+                    child: LineChartWidget(id: widget.coin["id"], days: days),
+                  ),
+                  Options(
+                      chosenValue: days,
+                      changeStateFunction: (d) {
+                        setState(() {
+                          days = d;
+                        });
+                      }),
+                  Row(
+                    children: [
+                      Expanded(
+                          flex: 100,
+                          child: ElevatedButton(
+                              onPressed: () {
+                                if (isAFavourite) {
+                                  FirestoreService()
+                                      .removeFavourite(widget.coin["id"]);
+                                } else {
+                                  FirestoreService()
+                                      .addFavourite(widget.coin["id"]);
+                                }
+                                setState(() {});
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: isAFavourite
+                                    ? Colors.grey.shade600
+                                    : Colors.red.shade500,
+                              ),
+                              child: Text(isAFavourite
+                                  ? "Remove from favourite"
+                                  : "Add to favourite")))
+                    ],
+                  )
+                ],
+              ),
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        });
   }
 }
 
