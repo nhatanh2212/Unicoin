@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:unicoin/market/lineChart.dart';
+import 'package:unicoin/portfolio/transactions_form.dart';
 import 'package:unicoin/services/firestore.dart';
 import 'package:provider/provider.dart';
 
@@ -83,6 +84,24 @@ class _CoinScreenState extends State<CoinScreen> {
                         child: Text(isAFavourite
                             ? "Remove from favourite"
                             : "Add to favourite")),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 100,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                TransactionsForm(coin: widget.coin)));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.green,
+                      ),
+                      child: const Text("Add transaction"),
+                    ),
                   ),
                 ],
               ),
