@@ -29,27 +29,46 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
             if (data.isEmpty) {
               return Scaffold(
-                  appBar: AppBar(title: const Text("Favourites")),
-                  body: const Center(
-                      child: Text(
-                    "You do not have any favourite coins yet!",
-                    textDirection: TextDirection.ltr,
-                  )));
+                  appBar: AppBar(
+                      title: const Text("Favourites"),
+                      backgroundColor: const Color.fromARGB(255, 27, 35, 42)),
+                  body: Container(
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                      image: AssetImage('Background_base.jpg'),
+                      fit: BoxFit.cover,
+                    )),
+                    child: const Center(
+                        child: Text(
+                      "You do not have any favourite coins yet!",
+                      textDirection: TextDirection.ltr,
+                    )),
+                  ));
             }
 
             return Scaffold(
-              appBar: AppBar(title: const Text("Favourites")),
-              body: RefreshIndicator(
-                onRefresh: () async {
-                  setState(() {});
-                },
-                child: ListView.builder(
-                    itemCount: data.length,
-                    itemBuilder: (BuildContext context, index) {
-                      return MarketItem(coin: data[index], id: index);
-                    }),
+              appBar: AppBar(
+                title: const Text("Favourites"),
+                backgroundColor: const Color.fromARGB(255, 27, 35, 42),
               ),
-              bottomNavigationBar: const BottomNavBar(),
+              body: Container(
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                  image: AssetImage('Background_base.jpg'),
+                  fit: BoxFit.cover,
+                )),
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    setState(() {});
+                  },
+                  child: ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (BuildContext context, index) {
+                        return MarketItem(coin: data[index], id: index);
+                      }),
+                ),
+              ),
+              bottomNavigationBar: BottomNavBar(),
             );
           } else {
             return const Text("No market data found in the api",

@@ -35,7 +35,8 @@ class MarketItem extends StatelessWidget {
               ),
               Expanded(
                 flex: 35,
-                child: Text('${coin["name"]}', style: TextStyle(fontSize: 15)),
+                child: Text('${coin["name"]}',
+                    style: const TextStyle(fontSize: 15)),
               ),
               Expanded(
                 flex: 20,

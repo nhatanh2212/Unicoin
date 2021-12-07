@@ -16,7 +16,6 @@ class _MarketScreenState extends State<MarketScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List>(
-
         future: Api().fetchMarketData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -51,8 +50,8 @@ class _MarketScreenState extends State<MarketScreen> {
               body: Container(
                 decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('Background_base.png'),
-                      fit: BoxFit.cover,
+                  image: AssetImage('Background_base.jpg'),
+                  fit: BoxFit.cover,
                 )),
                 child: RefreshIndicator(
                   onRefresh: () async {
@@ -72,8 +71,7 @@ class _MarketScreenState extends State<MarketScreen> {
                       }),
                 ),
               ),
-
-              bottomNavigationBar: const BottomNavBar(),
+              bottomNavigationBar: BottomNavBar(),
             );
           } else {
             return const Text("No market data found in the api",

@@ -15,7 +15,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        backgroundColor: const Color.fromARGB(255, 27, 35, 42),
         title: Row(
           children: const [
             Expanded(
@@ -24,13 +24,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
-                      color: Color.fromARGB(255, 94, 213, 168),
                     )))
           ],
         ),
       ),
       body: const Body(),
-      bottomNavigationBar: const BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(),
     );
   }
 }
