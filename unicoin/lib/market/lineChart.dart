@@ -1,5 +1,4 @@
 // ignore: file_names
-import 'dart:math';
 import "package:flutter/material.dart";
 import 'package:fl_chart/fl_chart.dart';
 import 'package:unicoin/services/api.dart';
@@ -7,40 +6,37 @@ import 'package:unicoin/services/api.dart';
 class LineChartWidget extends StatelessWidget {
   // ignore: prefer_typing_uninitialized_variables
   final String id;
+  final int days;
   final List<Color> gradientColors = [
     const Color(0xff23b6e6),
     const Color(0xff02d39a),
   ];
 
-  LineChartWidget({Key? key, required this.id}) : super(key: key);
+  LineChartWidget({Key? key, required this.id, required this.days})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List>(
-        future: Api().getCoinHistoryIn7Days(id, DateTime.now()),
+    return FutureBuilder<Map>(
+        future: Api().getCoinHistory(id, days),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasData) {
             var data = snapshot.data!;
-            if (data.length != 7) return Container();
-            double highestY = 0;
             List<FlSpot> spots = [];
-            for (int i = 0; i < data.length; i++) {
-              highestY =
-                  max(highestY, data[i]["market_data"]["current_price"]["usd"]);
-              spots.add(FlSpot(i.toDouble(),
-                  data[i]["market_data"]["current_price"]["usd"]));
+            for (int i = 0; i < data["prices"].length; i++) {
+              spots.add(FlSpot(i.toDouble(), data["prices"][i][1]));
             }
-            highestY = highestY * 5 / 4;
             return Center(
               child: SizedBox(
                 height: MediaQuery.of(context).size.width * 0.5,
                 width: MediaQuery.of(context).size.width,
                 child: LineChart(
                   LineChartData(
+                    titlesData: FlTitlesData(show: false),
                     gridData: FlGridData(
                       show: true,
                       getDrawingHorizontalLine: (value) {
