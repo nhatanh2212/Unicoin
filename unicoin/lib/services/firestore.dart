@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rxdart/src/transformers/switch_map.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:unicoin/services/api.dart';
 import 'package:unicoin/services/auth.dart';
 
@@ -68,7 +68,6 @@ class FirestoreService {
         return {};
       }
     } catch (error) {
-      print(error);
       return {};
     }
   }
@@ -89,7 +88,6 @@ class FirestoreService {
         return [];
       }
     } catch (error) {
-      print(error);
       return [];
     }
   }
