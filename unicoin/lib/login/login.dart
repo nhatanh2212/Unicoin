@@ -10,15 +10,20 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 27, 35, 42),
       body: Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+          image: AssetImage('Background.png'),
+          fit: BoxFit.cover,
+        )),
         padding: const EdgeInsets.all(30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'logo.jpg',
-              height: 250,
+              'logo.png',
+              height: 350,
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 20),
             LoginButton(
               text: 'Sign in with Google',
               icon: FontAwesomeIcons.google,
