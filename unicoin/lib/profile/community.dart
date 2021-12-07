@@ -1,9 +1,8 @@
 import "package:flutter/material.dart";
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:unicoin/services/auth.dart';
 
-class Body extends StatelessWidget {
-  const Body({Key? key}) : super(key: key);
+class CommunityScreen extends StatelessWidget {
+  const CommunityScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,23 +15,18 @@ class Body extends StatelessWidget {
             child: Image(image: AssetImage("logo.png"))),
         SizedBox(height: 20),
         Button(
-          icon: FontAwesomeIcons.signInAlt,
-          text: "Create Account/ sign in",
-          press: () => Navigator.pushNamed(context, '/login'),
-        ),
-        Button(
-          icon: FontAwesomeIcons.userFriends,
-          text: "Join community",
-          press: () => Navigator.pushNamed(context, '/community'),
-        ),
-        Button(
-          icon: FontAwesomeIcons.questionCircle,
-          text: "Help and Support",
+          icon: FontAwesomeIcons.facebook,
+          text: "Like us on Facebook",
           press: () {},
         ),
         Button(
-          icon: FontAwesomeIcons.doorOpen,
-          text: "About us",
+          icon: FontAwesomeIcons.twitter,
+          text: "Like us on Twitter",
+          press: () {},
+        ),
+        Button(
+          icon: FontAwesomeIcons.instagram,
+          text: "Like us on Instagram",
           press: () {},
         ),
       ],

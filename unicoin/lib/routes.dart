@@ -4,6 +4,7 @@ import 'package:unicoin/login/login.dart';
 import 'package:unicoin/market/market.dart';
 import 'package:unicoin/portfolio/portfolio.dart';
 import 'package:unicoin/profile/profile.dart';
+import 'package:unicoin/profile/community.dart';
 
 var appRoutes = {
   "/": (context) => const HomeScreen(),
@@ -12,4 +13,5 @@ var appRoutes = {
   "/portfolio": (context) => const PortfolioScreen(),
   "/profile": (context) => const ProfileScreen(),
   "/favourite": (context) => const FavouriteScreen(),
+  "/community": (context) => const CommunityScreen(),
 };
