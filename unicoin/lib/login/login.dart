@@ -75,6 +75,7 @@ class LoginButton extends StatelessWidget {
           style: TextButton.styleFrom(
             padding: const EdgeInsets.all(24),
             backgroundColor: color,
+            textStyle: TextStyle(fontSize: 18),
           ),
           onPressed: () => loginMethod(),
           label: Text(text, textAlign: TextAlign.center),

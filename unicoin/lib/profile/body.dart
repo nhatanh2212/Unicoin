@@ -1,8 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:unicoin/routes.dart';
-
-import '../login/login.dart';
+import 'package:unicoin/services/auth.dart';
 
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);
@@ -26,7 +24,7 @@ class Body extends StatelessWidget {
         Button(
           icon: FontAwesomeIcons.signInAlt,
           text: "Create Account/ sign in",
-          press: () => Navigator.pushNamed(context, '/lib/login/LoginScreen'),
+          press: () {},
         ),
         Button(
           icon: FontAwesomeIcons.userFriends,
@@ -71,27 +69,27 @@ class Button extends StatelessWidget {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             primary: Color.fromARGB(255, 94, 213, 168),
             onPrimary: Colors.white,
-            onSurface: Colors.grey,
+            onSurface: Color.fromARGB(255, 24, 24, 24),
           ),
           onPressed: press,
           child: Row(
             children: [
               Icon(
                 icon,
-                color: Color.fromARGB(255, 99, 105, 103),
+                color: Color.fromARGB(255, 44, 44, 44),
               ),
               const SizedBox(width: 20),
               Expanded(
                   child: Text(
                 text,
                 style: const TextStyle(
-                  color: Color.fromARGB(255, 99, 107, 104),
+                  color: Color.fromARGB(255, 70, 70, 70),
                   fontSize: 20,
                 ),
               )),
               const Icon(
                 FontAwesomeIcons.arrowCircleRight,
-                color: Color.fromARGB(255, 77, 83, 81),
+                color: Color.fromARGB(255, 48, 48, 48),
               ),
             ],
           )),
