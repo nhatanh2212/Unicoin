@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:unicoin/market/market_item.dart';
 import 'package:unicoin/services/api.dart';
-import 'package:unicoin/shared/bottom_nav.dart';
 
 import '../shared/error.dart';
 

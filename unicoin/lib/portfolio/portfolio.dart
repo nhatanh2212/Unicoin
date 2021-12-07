@@ -4,7 +4,6 @@ import 'package:unicoin/services/api.dart';
 
 import 'transactions.dart';
 import 'summary_item.dart';
-import '../shared/bottom_nav.dart';
 import '../shared/error.dart';
 
 class PortfolioScreen extends StatefulWidget {

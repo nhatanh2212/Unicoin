@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:unicoin/services/api.dart';
 
 import '../market/market_item.dart';
-import '../shared/bottom_nav.dart';
 import '../shared/error.dart';
 
 class FavouriteScreen extends StatefulWidget {

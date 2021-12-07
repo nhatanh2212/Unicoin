@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import 'package:unicoin/shared/bottom_nav.dart';
 import 'package:unicoin/profile/body.dart';
 
 class ProfileScreen extends StatefulWidget {
