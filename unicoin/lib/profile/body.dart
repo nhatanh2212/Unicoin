@@ -1,5 +1,8 @@
 import "package:flutter/material.dart";
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:unicoin/routes.dart';
+
+import '../login/login.dart';
 
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);
@@ -8,18 +11,22 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+          image: AssetImage('Background.png'),
+          fit: BoxFit.cover,
+        ))),
         const SizedBox(height: 20),
         const SizedBox(
-            height: 115,
-            width: 115,
-            child: CircleAvatar(
-              backgroundImage: AssetImage("logo.png"),
-            )),
-        const SizedBox(height: 20),
+            height: 200,
+            width: 200,
+            child: Image(image: AssetImage("logo.png"))),
+        SizedBox(height: 20),
         Button(
           icon: FontAwesomeIcons.signInAlt,
           text: "Create Account/ sign in",
-          press: () {},
+          press: () => Navigator.pushNamed(context, '/lib/login/LoginScreen'),
         ),
         Button(
           icon: FontAwesomeIcons.userFriends,
@@ -32,8 +39,8 @@ class Body extends StatelessWidget {
           press: () {},
         ),
         Button(
-          icon: FontAwesomeIcons.google,
-          text: "Create Account/ sign in",
+          icon: FontAwesomeIcons.doorOpen,
+          text: "About us",
           press: () {},
         ),
       ],
@@ -62,7 +69,7 @@ class Button extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            primary: Colors.teal,
+            primary: Color.fromARGB(255, 94, 213, 168),
             onPrimary: Colors.white,
             onSurface: Colors.grey,
           ),
@@ -71,20 +78,20 @@ class Button extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: Color.fromARGB(255, 215, 233, 226),
+                color: Color.fromARGB(255, 99, 105, 103),
               ),
               const SizedBox(width: 20),
               Expanded(
                   child: Text(
                 text,
                 style: const TextStyle(
-                  color: Color.fromARGB(255, 215, 233, 226),
+                  color: Color.fromARGB(255, 99, 107, 104),
                   fontSize: 20,
                 ),
               )),
               const Icon(
                 FontAwesomeIcons.arrowCircleRight,
-                color: Color.fromARGB(255, 215, 233, 226),
+                color: Color.fromARGB(255, 77, 83, 81),
               ),
             ],
           )),

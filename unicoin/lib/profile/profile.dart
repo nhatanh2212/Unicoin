@@ -19,7 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: Row(
           children: const [
             Expanded(
-                child: Text('More',
+                child: Text('Profile',
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
