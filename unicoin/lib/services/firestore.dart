@@ -63,14 +63,11 @@ class FirestoreService {
         // var favouriteCoinsData = await Api().fetchMarketData(coins: data["favourites"]);
         var data = snapshot.docs[0];
 
-        return {
-          "name": data["name"],
-          "summary": data["summary"]
-        };
+        return {"name": data["name"], "summary": data["summary"]};
       } else {
         return {};
       }
-    } catch(error) {
+    } catch (error) {
       print(error);
       return {};
     }
@@ -91,7 +88,7 @@ class FirestoreService {
       } else {
         return [];
       }
-    } catch(error) {
+    } catch (error) {
       print(error);
       return [];
     }
@@ -101,7 +98,13 @@ class FirestoreService {
     return AuthService().userStream.switchMap((user) {
       if (user != null) {
         var ref = _db.collection('users').doc(user.uid);
-        return ref.snapshots().map((doc) => doc.data());
+        return ref.snapshots().map((doc) {
+          if (doc.exists) {
+            return doc.data();
+          } else {
+            return {"favourites": []};
+          }
+        });
       } else {
         return Stream.fromIterable([
           {"favourites": []}
