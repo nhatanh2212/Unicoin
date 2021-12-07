@@ -40,9 +40,9 @@ class BottomNavBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            FontAwesomeIcons.userAlt,
+            FontAwesomeIcons.ellipsisH,
           ),
-          label: 'Profile',
+          label: 'More',
         ),
       ],
       currentIndex: ModalRoute.of(context)?.settings.name != null
