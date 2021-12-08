@@ -30,7 +30,6 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
 
             return Scaffold(
               appBar: AppBar(
-                automaticallyImplyLeading: false,
                 backgroundColor: const Color.fromARGB(255, 27, 35, 42),
                 title: Row(
                   children: const [
@@ -47,10 +46,9 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
               body: Container(
                 decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('Background_base.jpg'),
-                      fit: BoxFit.cover,
-                    )
-                ),
+                  image: AssetImage('Background_base.jpg'),
+                  fit: BoxFit.cover,
+                )),
                 child: RefreshIndicator(
                   onRefresh: () async {
                     setState(() {});
@@ -70,7 +68,8 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
 class _TransactionsListWidget extends StatefulWidget {
   final List transactions;
 
-  const _TransactionsListWidget({Key? key, required this.transactions}) : super(key: key);
+  const _TransactionsListWidget({Key? key, required this.transactions})
+      : super(key: key);
 
   @override
   _TransactionsListWidgetState createState() => _TransactionsListWidgetState();
@@ -80,42 +79,51 @@ class _TransactionsListWidgetState extends State<_TransactionsListWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List>(
-      future: getTransactionsInfo(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(
-            child: ErrorMessage(message: snapshot.error.toString()),
-          );
-        } else if (snapshot.hasData) {
-          var transHistory = snapshot.data!;
+        future: getTransactionsInfo(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(
+              child: ErrorMessage(message: snapshot.error.toString()),
+            );
+          } else if (snapshot.hasData) {
+            var transHistory = snapshot.data!;
 
-          return ListView.builder(
-              itemCount: transHistory.length,
-              itemBuilder: (BuildContext context, index) {
-                if (index == 0) {
-                  return Column(children: [
-                    const Title(),
-                    TransactionsItem(coin: transHistory[index], id: index, amount: widget.transactions[index]["amount"].toDouble(), time: widget.transactions[index]["time"].toDate()),
-                  ]);
-                } else {
-                  return TransactionsItem(coin: transHistory[index], id: index, amount: widget.transactions[index]["amount"].toDouble(), time: widget.transactions[index]["time"].toDate());
-                }
-              });
-        } else {
-          return const Text("No market data found in the api",
-              textDirection: TextDirection.ltr);
-        }
-      }
-    );
+            return ListView.builder(
+                itemCount: transHistory.length,
+                itemBuilder: (BuildContext context, index) {
+                  if (index == 0) {
+                    return Column(children: [
+                      const Title(),
+                      TransactionsItem(
+                          coin: transHistory[index],
+                          id: index,
+                          amount:
+                              widget.transactions[index]["amount"].toDouble(),
+                          time: widget.transactions[index]["time"].toDate()),
+                    ]);
+                  } else {
+                    return TransactionsItem(
+                        coin: transHistory[index],
+                        id: index,
+                        amount: widget.transactions[index]["amount"].toDouble(),
+                        time: widget.transactions[index]["time"].toDate());
+                  }
+                });
+          } else {
+            return const Text("No market data found in the api",
+                textDirection: TextDirection.ltr);
+          }
+        });
   }
 
   Future<List> getTransactionsInfo() async {
     List info = [];
-    
+
     for (var element in widget.transactions) {
-      var trans = await Api().getCoinAtDateTime(element["coinID"], DateTime.parse(element["time"].toDate().toString()));
+      var trans = await Api().getCoinAtDateTime(element["coinID"],
+          DateTime.parse(element["time"].toDate().toString()));
       info.add(trans);
     }
 

@@ -56,7 +56,7 @@ class Api {
     String query = "/coins/" +
         id +
         // ignore: unnecessary_brace_in_string_interps
-        '/history?date=${formattedDate}&sparkline=true&tickers=false&comnunity_data=false&developer_data=false&localization=false';
+        '/history?date=${formattedDate}';
 
     try {
       final response = await http.get(Uri.parse(_url + query));

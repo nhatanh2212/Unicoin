@@ -36,7 +36,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                     title: Row(
                       children: const [
                         Expanded(
-                            child: Text('Portfolios',
+                            child: Text('Portfolio',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -47,7 +47,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                   ),
                   body: const Center(
                       child: Text(
-                    "You do not have any portfolios yet!",
+                    "You do not have any transaction yet!",
                     textDirection: TextDirection.ltr,
                   )));
             }
@@ -70,28 +70,34 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
               ),
               body: Container(
                 decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('Background_base.jpg'),
-                    fit: BoxFit.cover,
-                  )
-                ),
+                    image: DecorationImage(
+                  image: AssetImage('Background_base.jpg'),
+                  fit: BoxFit.cover,
+                )),
                 child: RefreshIndicator(
                   onRefresh: () async {
                     setState(() {});
                   },
-                  child: Column(
+                  child: ListView(
                     children: [
-                      _SummaryListWidget(summary: data),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const TransactionsScreen()));
-                        },
-                        child: const Text("Transactions"),
+                      const SizedBox(height: 10),
+                      Center(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const TransactionsScreen()));
+                            },
+                            child: const Text("Transactions history"),
+                          ),
+                        ),
                       ),
+                      const SizedBox(height: 10),
+                      _SummaryListWidget(summary: data),
                     ],
                   ),
                 ),
@@ -128,6 +134,10 @@ class _SummaryListWidgetState extends State<_SummaryListWidget> {
             );
           } else if (snapshot.hasData) {
             var market = snapshot.data!;
+            num total_value = 0;
+            for (var coin in market) {
+              total_value += widget.summary[coin["id"]] * coin["current_price"];
+            }
 
             return ListView.builder(
                 itemCount: market.length,
@@ -135,6 +145,29 @@ class _SummaryListWidgetState extends State<_SummaryListWidget> {
                 itemBuilder: (BuildContext context, index) {
                   if (index == 0) {
                     return Column(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Expanded(
+                              flex: 5,
+                              child: Text('TOTAL VALUE:',
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                            Expanded(
+                              flex: 5,
+                              child: Text('\$$total_value',
+                                  textAlign: TextAlign.right,
+                                  style: const TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                          ],
+                        ),
+                      ),
                       const Title(),
                       SummaryItem(
                           coin: market[index],
