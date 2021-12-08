@@ -36,6 +36,13 @@ Effortless Cryptocurrency Portfolio Tracker Application. Unicorn utilizes Coinge
     * By tapping from different timeframes: 24h, one week, one month, three months, six months, one year, all, we can see the wrap-up chart display coin value by time.
     * Tap "Add to favorite" to add this Coin to our outstanding collection.
     * Some specific features: Coin name, Current value, Market cap, Market cap rank, Total volume, the highest value in 24h, the Lowest value in 24h, Price changing in 24h, Market cap change in 24h, Circulating supply, Total supply.
+ 
+<br>
+
+![alt text](https://github.com/nhatanh2212/Unicoin/blob/main/unicoin/assets/4a.jpg)
+![alt text](https://github.com/nhatanh2212/Unicoin/blob/main/unicoin/assets/4b.jpg)
+![alt text](https://github.com/nhatanh2212/Unicoin/blob/main/unicoin/assets/4c.jpg)
+
 
 <br>
 
