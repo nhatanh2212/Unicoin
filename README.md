@@ -17,7 +17,7 @@ Effortless Cryptocurrency Portfolio Tracker Application. Unicorn utilizes Coinge
 2. Cryptocurrency Market
     * Total market cap value in USD is shown on the top of the page.
     * Show crypto 24h change percentage.
-    * Sort coins by their current price in USD.
+    * Sort coins by their market cap in USD.
     * Unicoin currently supports 20 most famous cryptocurrency.
    
 <br>
