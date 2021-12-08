@@ -39,9 +39,9 @@ Effortless Cryptocurrency Portfolio Tracker Application. Unicorn utilizes Coinge
  
 <br>
 
-![alt text](https://github.com/nhatanh2212/Unicoin/blob/main/unicoin/assets/4a.jpg)
-![alt text](https://github.com/nhatanh2212/Unicoin/blob/main/unicoin/assets/4b.jpg)
-![alt text](https://github.com/nhatanh2212/Unicoin/blob/main/unicoin/assets/4c.jpg)
+![alt text](https://github.com/nhatanh2212/Unicoin/blob/main/unicoin/assets/4a.png)
+![alt text](https://github.com/nhatanh2212/Unicoin/blob/main/unicoin/assets/4b.png)
+![alt text](https://github.com/nhatanh2212/Unicoin/blob/main/unicoin/assets/4c.png)
 
 
 <br>
