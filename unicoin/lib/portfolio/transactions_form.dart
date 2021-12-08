@@ -58,8 +58,8 @@ class _TransactionsFormState extends State<TransactionsForm> {
 
         int? calories = int.tryParse(value);
 
-        if (calories == null || calories <= 0) {
-          return 'Amount must be greater than 0';
+        if (calories == null) {
+          return 'Amount is required';
         }
 
         return null;
