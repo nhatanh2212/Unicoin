@@ -54,16 +54,22 @@ class FirestoreService {
 
   Future<Map> getSummary() async {
     final user = AuthService().user!;
-
     try {
-      var ref = _db.collection('users').doc(user.uid).collection("portfolios");
-      var snapshot = await ref.orderBy("creationTime").limit(1).get();
+      var ref = _db.collection('users').doc(user.uid);
+      var snapshot = await ref.get();
 
-      if (snapshot.size > 0) {
-        // var favouriteCoinsData = await Api().fetchMarketData(coins: data["favourites"]);
-        var data = snapshot.docs[0];
+      if (snapshot.exists) {
+        var data = snapshot.data()!;
 
-        return {"name": data["name"], "summary": data["summary"]};
+        if (!data.containsKey("portfolio")) {
+          return {};
+        }
+
+        if (!data["portfolio"].containsKey("summary")) {
+          return {};
+        }
+
+        return data["portfolio"]["summary"];
       } else {
         return {};
       }
@@ -72,18 +78,49 @@ class FirestoreService {
     }
   }
 
-  Future<List> getTransactions() async {
+  void addTransaction(String coinID, int amount, Timestamp time) async {
     final user = AuthService().user!;
 
     try {
-      var ref = _db.collection('users').doc(user.uid).collection("portfolios");
-      var snapshot = await ref.orderBy("creationTime").limit(1).get();
+      var ref = _db.collection('users').doc(user.uid);
+      var data = {
+        "portfolio.summary.$coinID": FieldValue.increment(amount)
+      };
+      await ref.update(data);
 
-      if (snapshot.size > 0) {
-        // var favouriteCoinsData = await Api().fetchMarketData(coins: data["favourites"]);
-        var data = snapshot.docs[0];
+      Map trans = {
+        "coinID": coinID,
+        "amount": amount,
+        "time": time
+      };
 
-        return data["transactions"];
+      data = {
+        "portfolio.transactions": FieldValue.arrayUnion([trans])
+      };
+      await ref.update(data);
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<List> getTransactions() async {
+    final user = AuthService().user!;
+    try {
+      var ref = _db.collection('users').doc(user.uid);
+      var snapshot = await ref.get();
+
+      if (snapshot.exists) {
+        var data = snapshot.data()!;
+
+        if (!data.containsKey("portfolio")) {
+          return [];
+        }
+
+        if (!data["portfolio"].containsKey("transactions")) {
+          return [];
+        }
+
+        return data["portfolio"]["transactions"];
       } else {
         return [];
       }

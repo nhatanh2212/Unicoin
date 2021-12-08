@@ -81,7 +81,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                   },
                   child: Column(
                     children: [
-                      _SummaryListWidget(summary: data["summary"]),
+                      _SummaryListWidget(summary: data),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.push(

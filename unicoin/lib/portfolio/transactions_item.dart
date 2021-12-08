@@ -14,10 +14,6 @@ class TransactionsItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (BuildContext context) => CoinScreen(coin: coin)));
-      },
       child: Container(
           padding:
           const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
+import 'package:unicoin/services/firestore.dart';
 
 class TransactionsForm extends StatefulWidget {
   final coin;
@@ -13,7 +14,7 @@ class TransactionsForm extends StatefulWidget {
 
 class _TransactionsFormState extends State<TransactionsForm> {
   int? _amount;
-  late DateTime date;
+  DateTime date = DateTime.now();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -41,25 +42,15 @@ class _TransactionsFormState extends State<TransactionsForm> {
   }
 
   Widget _buildDate() {
-    // ignore: sized_box_for_whitespace
     return Container(
-      height: MediaQuery.of(context).size.height * 0.4,
-      width: MediaQuery.of(context).size.width * 0.9,
-      child: CupertinoTheme(
-        data: const CupertinoThemeData(
-          textTheme: CupertinoTextThemeData(
-            dateTimePickerTextStyle:
-                TextStyle(inherit: false, color: Colors.white, fontSize: 15),
-          ),
-        ),
-        child: CupertinoDatePicker(
-            dateOrder: DatePickerDateOrder.dmy,
-            mode: CupertinoDatePickerMode.date,
-            initialDateTime: DateTime(2002, 1, 1),
-            onDateTimeChanged: (DateTime newDateTime) {
-              date = newDateTime;
-            }),
-      ),
+      height: 400,
+      child: CupertinoDatePicker(
+          dateOrder: DatePickerDateOrder.dmy,
+          mode: CupertinoDatePickerMode.date,
+          initialDateTime: DateTime.now(),
+          onDateTimeChanged: (DateTime newDateTime) {
+            date = newDateTime;
+          }),
     );
   }
 
@@ -69,47 +60,22 @@ class _TransactionsFormState extends State<TransactionsForm> {
         appBar: AppBar(
             backgroundColor: const Color.fromARGB(255, 27, 35, 42),
             title: const Text("New transaction")),
-        body: Container(
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-            image: AssetImage('Background_base.jpg'),
-            fit: BoxFit.cover,
-          )),
-          child: Form(
-            key: _formKey,
+        body: Form(
+          key: _formKey,
+          child: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+              image: AssetImage('Background_base.jpg'),
+              fit: BoxFit.cover,
+            )),
             child: Padding(
               padding: const EdgeInsets.all(50),
               child: ListView(children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex: 20,
-                      child: Image.network(widget.coin["image"],
-                          width: 50, height: 50),
-                    ),
-                    const SizedBox(width: 20),
-                    Expanded(
-                      flex: 80,
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '${widget.coin["name"]}',
-                          style: const TextStyle(fontSize: 35),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
                 _buildAmount(),
-                const SizedBox(height: 20),
-                const Text("Transaction date: "),
                 _buildDate(),
                 ElevatedButton(
                   child: const Text(
-                    'Add to portfolio',
+                    'Submit',
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                   onPressed: () {
@@ -119,13 +85,8 @@ class _TransactionsFormState extends State<TransactionsForm> {
 
                     _formKey.currentState!.save();
 
-                    Map data = {
-                      "coinId": widget.coin["id"],
-                      "time": date, //Timestamp.fromDate(date),
-                      "amount": _amount,
-                    };
-                    print(data);
-                    //Send to API
+                    FirestoreService().addTransaction(
+                        widget.coin["id"], _amount!, Timestamp.fromDate(date));
                   },
                 )
               ]),
