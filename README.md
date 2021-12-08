@@ -1,5 +1,7 @@
 # UNICOIN - DEVFEST HCMC 2021
 
+![alt text](https://github.com/nhatanh2212/Unicoin/blob/main/unicoin/assets/intro.gif)
+
 Effortless Cryptocurrency Portfolio Tracker Application. Unicorn utilizes Coingecko's trusty API to track up-to-date data of various cryptocurrencies. Unicorn allows you to learn through hands-on experience with the crypto market using a portfolio built using virtual money.
 
 **Link Youtube:** https://youtu.be/mb2NpUXuL5g 
